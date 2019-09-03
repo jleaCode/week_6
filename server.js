@@ -78,7 +78,7 @@ app.post('/updateTask', function (req, res) {
     let filter = {TaskId: parseInt(req.body.utaskid)};
     let theUpdate = {
         $set: {
-            TaskStatus: req.body.taskStatus,
+            TaskStatus: taskDetails.taskStatus,
         }
     };
     db.collection('tasklist').updateOne(filter, theUpdate);
@@ -89,22 +89,21 @@ app.post('/updateTask', function (req, res) {
 app.get('/deleteTask', function (req, res) {
     res.sendFile(__dirname + '/views/deleteTask.html');
 });
-//POST request: receive the user's name and do the delete operation 
+
 app.post('/deletetask', function (req, res) {
-    // let userDetails = req.body;
     let filter = {
         TaskId: parseInt(req.body.TaskId)
     };
     db.collection('tasklist').deleteOne(filter);
     res.redirect("/listTask");
-    // res.redirect('/getusers'); // redirect the client to list users page
+
 });
 
 //delete all task
 app.get('/deleteAll', function (req, res) {
     res.sendFile(__dirname + '/views/deleteAll.html');
 });
-//POST request: receive the user's name and do the delete operation 
+
 app.post('/deleteAllTask', function (req, res) {
     if (req.body.selection == "true"){
         db.collection('tasklist').deleteMany({TaskStatus: "Complete"});
